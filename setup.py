@@ -1,6 +1,4 @@
 from setuptools import setup, find_packages
-# To use a consistent encoding
-from codecs import open
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -9,6 +7,7 @@ here = path.abspath(path.dirname(__file__))
 setup(
     name='gbdx-task-interface',
     version='0.0.1',
+    packages=find_packages(),
     description='A helper base class for easier GBDX application on-boarding.',
     url='https://github.com/tdg-platform',
     author='GBDX (Dmitry Zviagintsev)',
@@ -21,5 +20,8 @@ setup(
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 2.7',
-    ]
+    ],
+        package_data={
+        'gbdx_task_interface': [],
+    },
 )
