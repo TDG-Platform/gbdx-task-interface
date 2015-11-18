@@ -32,6 +32,14 @@ class GbdxTaskInterface(object):
     def output_path(self):
         return os.path.join(self.base_path, 'output')
 
+    @property
+    def reason(self):
+        return self._reason
+
+    @reason.setter
+    def reason(self, reason):
+        self._reason = reason
+
     def get_input_string_port(self, port_name, default=None):
         """
         Get input string port value
