@@ -10,6 +10,7 @@ class GbdxTaskInterface(object):
         self.__work_path = work_path
         self.__string_input_ports = None
         self.__string_output_ports = None
+        self._reason = None
 
         if not os.path.exists(self.__work_path):
             raise Exception("Working path must exist. {_path}.".format(_path=self.__work_path))
@@ -97,4 +98,4 @@ class GbdxTaskInterface(object):
         if exc_type:
             self.finalize('failed', str(exc_val))
         else:
-            self.finalize('success')
+            self.finalize('success', self._reason)
