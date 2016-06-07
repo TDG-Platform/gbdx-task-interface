@@ -51,13 +51,30 @@ class GbdxTaskInterface(object):
             return self.__string_input_ports.get(port_name, default)
         return default
 
-    def get_input_data_port(self, port_name):
+    def get_input_data_port(self, port_name, default=None):
         """
         Get the input location for a specific port
         :param port_name:
+        :param default:
         :return: :rtype:
         """
-        return os.path.join(self.input_path, port_name)
+        port_location = os.path.join(self.input_path, port_name)
+        if not os.path.isdir(port_location):
+            return default
+
+    def get_multiplex_input_data_port(self, port_name_prefix):
+        """
+        Get the input location for a specific multiplex port
+        :param port_name_prefix:
+        :return: :rtype:
+        """
+        result_list = []
+        for multiplex_port in os.listdir(self.input_path):
+            if multiplex_port.startswith(port_name_prefix):
+                folder_path = os.path.realpath(os.path.join(self.input_path, multiplex_port))
+                if os.path.isdir(folder_path):
+                    result_list.append(folder_path)
+        return result_list
 
     def get_output_data_port(self, port_name):
         """
