@@ -59,8 +59,10 @@ class GbdxTaskInterface(object):
         :return: :rtype:
         """
         port_location = os.path.join(self.input_path, port_name)
-        if not os.path.isdir(port_location):
-            return default
+        if os.path.isdir(port_location):
+            return port_location
+
+        return default
 
     def get_multiplex_input_data_port(self, port_name_prefix):
         """
