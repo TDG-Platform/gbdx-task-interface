@@ -10,6 +10,7 @@ class GbdxTaskInterface(object):
         self.__work_path = work_path
         self.__string_input_ports = None
         self.__string_output_ports = None
+        self.__runtime_info = None
         self._reason = None
 
         if not os.path.exists(self.__work_path):
@@ -19,6 +20,11 @@ class GbdxTaskInterface(object):
         if os.path.exists(string_input_ports):
             with open(string_input_ports, 'r') as f:
                 self.__string_input_ports = json.load(f)
+
+        gbdx_runtime = os.path.join(self.__work_path, "gbdx_runtime.json")
+        if os.path.exists(gbdx_runtime):
+            with open(gbdx_runtime, 'r') as f:
+                self.__runtime_info = json.load(f)
 
     @property
     def base_path(self):
@@ -49,6 +55,17 @@ class GbdxTaskInterface(object):
         """
         if self.__string_input_ports:
             return self.__string_input_ports.get(port_name, default)
+        return default
+
+    def get_runtime_info(self, runtime_attr, default=None):
+        """
+        Get GBDX runtime attribute info
+        :param runtime_attr:
+        :param default:
+        :return: :rtype:
+        """
+        if self.__runtime_info:
+            return self.__runtime_info.get(runtime_attr, default)
         return default
 
     def get_input_data_port(self, port_name, default=None):
