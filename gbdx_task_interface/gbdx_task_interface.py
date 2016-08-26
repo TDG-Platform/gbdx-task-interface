@@ -137,9 +137,3 @@ class GbdxTaskInterface(object):
 
     def __enter__(self):
         return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        if exc_type:
-            self.finalize('failed', str(exc_val))
-        else:
-            self.finalize('success', self._reason)
