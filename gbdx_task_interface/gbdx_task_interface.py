@@ -11,7 +11,8 @@ class GbdxTaskInterface(object):
         self.__string_input_ports = None
         self.__string_output_ports = None
         self.__runtime_info = None
-        self._reason = None
+        self.__reason = None
+        self.__status = "success"
 
         if not os.path.exists(self.__work_path):
             raise Exception("Working path must exist. {_path}.".format(_path=self.__work_path))
@@ -39,12 +40,20 @@ class GbdxTaskInterface(object):
         return os.path.join(self.base_path, 'output')
 
     @property
+    def status(self):
+        return self.__status
+
+    @status.setter
+    def status(self, status):
+        self.__status = status
+
+    @property
     def reason(self):
-        return self._reason
+        return self.__reason
 
     @reason.setter
     def reason(self, reason):
-        self._reason = reason
+        self.__reason = reason
 
     def get_input_string_port(self, port_name, default=None):
         """
@@ -137,3 +146,9 @@ class GbdxTaskInterface(object):
 
     def __enter__(self):
         return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if exc_type:
+            self.finalize('failed', str(exc_val))
+        else:
+            self.finalize(self.status, self.reason)
