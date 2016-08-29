@@ -7,22 +7,29 @@ class GbdxTaskInterface(object):
     """
 
     def __init__(self, work_path="/mnt/work/"):
-        self.__work_path = work_path
-        self.__string_input_ports = None
-        self.__string_output_ports = None
+        self._work_path = work_path
+        self._string_input_ports = None
+        self._string_output_ports = None
+        self._runtime_info = None
         self._reason = None
+        self._status = "success"
 
-        if not os.path.exists(self.__work_path):
-            raise Exception("Working path must exist. {_path}.".format(_path=self.__work_path))
+        if not os.path.exists(self._work_path):
+            raise Exception("Working path must exist. {_path}.".format(_path=self._work_path))
 
-        string_input_ports = os.path.join(self.__work_path, 'input', "ports.json")
+        string_input_ports = os.path.join(self._work_path, 'input', "ports.json")
         if os.path.exists(string_input_ports):
             with open(string_input_ports, 'r') as f:
-                self.__string_input_ports = json.load(f)
+                self._string_input_ports = json.load(f)
+
+        gbdx_runtime = os.path.join(self._work_path, "gbdx_runtime.json")
+        if os.path.exists(gbdx_runtime):
+            with open(gbdx_runtime, 'r') as f:
+                self._runtime_info = json.load(f)
 
     @property
     def base_path(self):
-        return self.__work_path
+        return self._work_path
 
     @property
     def input_path(self):
@@ -31,6 +38,14 @@ class GbdxTaskInterface(object):
     @property
     def output_path(self):
         return os.path.join(self.base_path, 'output')
+
+    @property
+    def status(self):
+        return self._status
+
+    @status.setter
+    def status(self, status):
+        self._status = status
 
     @property
     def reason(self):
@@ -47,8 +62,19 @@ class GbdxTaskInterface(object):
         :param default:
         :return: :rtype:
         """
-        if self.__string_input_ports:
-            return self.__string_input_ports.get(port_name, default)
+        if self._string_input_ports:
+            return self._string_input_ports.get(port_name, default)
+        return default
+
+    def get_runtime_info(self, runtime_attr, default=None):
+        """
+        Get GBDX runtime attribute info
+        :param runtime_attr:
+        :param default:
+        :return: :rtype:
+        """
+        if self._runtime_info:
+            return self._runtime_info.get(runtime_attr, default)
         return default
 
     def get_input_data_port(self, port_name, default=None):
@@ -93,10 +119,10 @@ class GbdxTaskInterface(object):
         :param value:
         :return: :rtype:
         """
-        if not self.__string_output_ports:
-            self.__string_output_ports = {}
+        if not self._string_output_ports:
+            self._string_output_ports = {}
 
-        self.__string_output_ports[port_name] = value
+        self._string_output_ports[port_name] = value
 
     def invoke(self):
         """
@@ -111,9 +137,9 @@ class GbdxTaskInterface(object):
         :param success_or_fail: string that is 'success' or 'fail'
         :param message:
         """
-        if self.__string_output_ports:
+        if self._string_output_ports:
             with open(os.path.join(self.output_path, 'ports.json'), 'w') as opf:
-                json.dump(self.__string_output_ports, opf, indent=4)
+                json.dump(self._string_output_ports, opf, indent=4)
 
         with open(os.path.join(self.base_path, 'status.json'), 'w') as sf:
             json.dump({'status': success_or_fail, 'reason': message}, sf, indent=4)
@@ -125,4 +151,4 @@ class GbdxTaskInterface(object):
         if exc_type:
             self.finalize('failed', str(exc_val))
         else:
-            self.finalize('success', self._reason)
+            self.finalize(self.status, self.reason)

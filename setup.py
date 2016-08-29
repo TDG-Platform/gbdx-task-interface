@@ -6,7 +6,7 @@ here = path.abspath(path.dirname(__file__))
 # Get the long description from the relevant file
 setup(
     name='gbdx-task-interface',
-    version='0.0.1',
+    version='0.0.2',
     packages=find_packages(),
     description='A helper base class for easier GBDX application on-boarding.',
     url='https://github.com/tdg-platform',
