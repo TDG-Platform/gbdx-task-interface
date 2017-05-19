@@ -78,7 +78,7 @@ For each output directory port there should be a folder created with the generat
     |       ├── file1.txt
     |       ├── file2.txt
     |       └── file3.txt
-    └── output (create this folder but leave empty)
+    └── output
     |    ├── ports.json (if you output string ports)
     |    └── output_directory_port (one directory per outputput dir port)
     |       ├── file1.txt
