@@ -12,7 +12,7 @@
   Refer to the example.py for usage
 
 ## Development and Debugging
-When developping or debuggin it can be helpful to "run" the task locally.
+When developping or debugging it can be helpful to "run" the task locally.
 You can locally create a folder that will mimic the input structure that the task will see when it is run.
 You can then set this task interface to use this local folder.
 
