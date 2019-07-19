@@ -1,1 +1,1 @@
-from gbdx_task_interface import GbdxTaskInterface
+from .gbdx_task_interface import GbdxTaskInterface
