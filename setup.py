@@ -38,7 +38,7 @@ setup(
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 2.7',
     ],
-        package_data={
+    package_data={
         'gbdx_task_interface': [],
     },
     include_package_data=True

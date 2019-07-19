@@ -4,7 +4,7 @@ try:
     from unittest.mock import patch, MagicMock
 except ImportError:
     # Python 2
-    from mock import patch, MagicMock
+    from mock import patch, MagicMock  # noqa: F401
 
 from gbdx_task_interface import GbdxTaskInterface
 
